@@ -4,24 +4,27 @@ const cheerio = require ("cheerio")
 const mongoose = require ("mongoose")
 const PORT = 8080
 const app = express()
+
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(express.static("public"));
+
+
+
 const mongodburi = "mongodb://localhost/newsscrape"
 mongoose.connect(mongodburi)
+
+
 const Post = require ("./models/post")
+
+
+
 app.get("/api/scrape",() => {
     axios.get("https://old.reddit.com/r/webdev/").then((response) => {
-
-  
   const $ = cheerio.load(response.data);
-
-
-
   $("p.title").each((i, element) => {
-
-
     const title = $(element).text();
-
     const link = $(element).children().attr("href");
 
 const post = {
@@ -39,6 +42,7 @@ newPost.save ((err)=>{
 });
 })
 
+
 app.get("/api/posts",(req, res)=>{
     Post.find({},(err, data)=>{
         if (err)
@@ -46,6 +50,20 @@ app.get("/api/posts",(req, res)=>{
         res.json(data)
     })
 })
+
+app.post("/", function(req, res){
+    res.sendFile(path.join(_dirname + "./public/index.hmtl"));
+    console.log(req.body);
+    db.post.insert(req.body, function(error, data){
+        if (error) {
+            console.log(error);
+          }
+          else {
+            res.send(data);
+          }
+        });
+    })
+
 
 
 app.listen(
