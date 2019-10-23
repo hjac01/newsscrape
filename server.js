@@ -10,6 +10,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("public"));
 
+var databaseUrl = "newsscrape";
+var collections = ["posts"];
 
 
 const mongodburi = "mongodb://localhost/newsscrape"
@@ -52,7 +54,7 @@ app.get("/api/posts",(req, res)=>{
 })
 
 app.post("/", function(req, res){
-    res.sendFile(path.join(_dirname + "./public/index.hmtl"));
+    res.sendFile(path.join(_dirname + "./public/index.html"));
     console.log(req.body);
     db.post.insert(req.body, function(error, data){
         if (error) {

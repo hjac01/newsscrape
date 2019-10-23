@@ -1,9 +1,8 @@
-function getResults(newPost) {
-    $("tbody").empty();
-newPost.forEach(function(post) {
+function getResults(posts) {
+posts.forEach(function(post) {
     var tr = $("<tr>").append(
-      $("<td>").text(title),
-      $("<td>").text(link),
+      $("<td>").text(post.title),
+      $("<td>").text(post.link),
     );
 
     $("tbody").append(tr);
@@ -11,11 +10,12 @@ newPost.forEach(function(post) {
 
 }
 
-$.getJSON("/", function(data) {
-    getResults(data);
+$.getJSON("/api/posts", function(posts) {
+  console.log(posts)
+    getResults(posts);
 });
 
-getResults();
+// getResults();
 $(document).on("click", "#scrape-new", function() {
     $.ajax({
       type: "POST",
