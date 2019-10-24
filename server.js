@@ -67,6 +67,23 @@ app.post("/", function(req, res){
     })
 
 
+// Clear the DB
+app.get("/clearall", function(req, res) {
+  // Remove every note from the notes collection
+  db.post.remove(req.body, function(error, data) {
+    // Log any errors to the console
+    if (error) {
+      console.log(error);
+    
+    }
+    else {
+      // Otherwise, send the mongojs response to the browser
+      // This will fire off the success function of the ajax request
+      res.send(data);
+    }
+  });
+});
+
 
 app.listen(
     PORT, () => {
