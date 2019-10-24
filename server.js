@@ -68,7 +68,7 @@ app.post("/", function(req, res){
 
 
 // Clear the DB
-app.get("/clearall", function(req, res) {
+app.get("/", function(req, res) {
   // Remove every note from the notes collection
   db.post.remove(req.body, function(error, data) {
     // Log any errors to the console

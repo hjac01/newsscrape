@@ -30,20 +30,17 @@ $(document).on("click", "#scrape-new", function() {
   });
 
   // When the #clear-all button is pressed
-$("#clear-all").on("click", function() {
-  // Make an AJAX GET request to delete the notes from the db
+$(document).on("click", "#clear-all", function() {
   $.ajax({
     type: "GET",
     dataType: "json",
-    url: "/clearall",
+    url: "/",
     // On a successful call, clear the #results section
-    success: function(response) {
+    success: function(posts) {
       $("#results").empty();
     }
   });
 });
-
-
 
   
   
