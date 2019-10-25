@@ -20,7 +20,27 @@ mongoose.connect(mongodburi)
 
 const Post = require ("./models/post")
 
+function scrape() {
+  axios.get("https://old.reddit.com/r/webdev/").then((response) => {
+  const $ = cheerio.load(response.data);
+  $("p.title").each((i, element) => {
+    const title = $(element).text();
+    const link = $(element).children().attr("href");
 
+const post = {
+    title: title,
+    link: link
+}
+const newPost = new Post (post)
+newPost.save ((err)=>{
+    if (err)
+    console.log("error")
+}) 
+   
+  });
+
+});
+}
 
 app.get("/api/scrape",() => {
     axios.get("https://old.reddit.com/r/webdev/").then((response) => {
@@ -53,6 +73,42 @@ app.get("/api/posts",(req, res)=>{
     })
 })
 
+app.get("/api/posts/saved",(req, res)=>{
+  Post.find({saved:true},(err, data)=>{
+      if (err)
+      console.log("error")
+      res.json(data)
+  })
+})
+
+// saved articles
+app.post("/api/posts/saved", (req, res) => {
+  res.sendFile(path.join(_dirname + "./public/saved.html"));
+  db.post.insert({saved:true}, function(err, data) {
+    if (error) {
+      console.log(error);
+    }
+    else {
+      res.send(data);
+    }
+
+  })
+})
+
+app.post("/api/posts",(req, res) => {
+  console.log(req.body)
+  Post.findByIdAndUpdate(req.body.id, { $set: {
+    saved: true
+  }},(err,data)=> {
+    if (err) {
+    console.log("error")
+    }
+    console.log("success")
+    
+
+  })
+})
+
 app.post("/", function(req, res){
     res.sendFile(path.join(_dirname + "./public/index.html"));
     console.log(req.body);
@@ -69,16 +125,12 @@ app.post("/", function(req, res){
 
 // Clear the DB
 app.get("/", function(req, res) {
-  // Remove every note from the notes collection
   db.post.remove(req.body, function(error, data) {
-    // Log any errors to the console
     if (error) {
       console.log(error);
     
     }
     else {
-      // Otherwise, send the mongojs response to the browser
-      // This will fire off the success function of the ajax request
       res.send(data);
     }
   });

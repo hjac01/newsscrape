@@ -16,6 +16,12 @@ var postSchema = new Schema({
     trim: true,
   },
 
+  saved: {
+    type: Boolean, 
+    default: false, 
+
+  }
+
   
 
 });
