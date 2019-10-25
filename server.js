@@ -83,7 +83,7 @@ app.get("/api/posts/saved",(req, res)=>{
 
 // saved articles
 app.post("/api/posts/saved", (req, res) => {
-  res.sendFile(path.join(_dirname + "./public/saved.html"));
+  res.sendFile(path.join(_dirname + ".public/saved.html"));
   db.post.insert({saved:true}, function(err, data) {
     if (error) {
       console.log(error);
