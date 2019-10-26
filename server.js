@@ -19,6 +19,7 @@ var collections = ["posts"];
 const mongodburi = "mongodb://localhost/newsscrape"
 mongoose.connect(mongodburi)
 
+var uri = process.env.MONGOLAB_URI;
 
 const Post = require ("./models/post")
 
