@@ -2,7 +2,6 @@ const express = require ("express")
 const axios = require ("axios")
 const cheerio = require ("cheerio")
 const mongoose = require ("mongoose")
-// const PORT = 8080
 const app = express()
 
 var port = process.env.PORT || 8080;
@@ -14,10 +13,6 @@ app.use(express.static("public"));
 
 var databaseUrl = "newsscrape";
 var collections = ["posts"];
-
-
-// const mongodburi = "mongodb://localhost/newsscrape"
-// mongoose.connect(mongodburi)
 
 var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/newsscrape";
 mongoose.connect(MONGODB_URI);
@@ -140,12 +135,6 @@ app.get("/", function(req, res) {
   });
 });
 
-
-// app.listen(
-//     PORT, () => {
-//         console.log("App is listening on 8080")
-//     }
-// )
 
 var server=app.listen(port,function() {
   console.log("app running on port 8080"); });
