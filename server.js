@@ -16,10 +16,11 @@ var databaseUrl = "newsscrape";
 var collections = ["posts"];
 
 
-const mongodburi = "mongodb://localhost/newsscrape"
-mongoose.connect(mongodburi)
+// const mongodburi = "mongodb://localhost/newsscrape"
+// mongoose.connect(mongodburi)
 
-var uri = process.env.MONGOLAB_URI;
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/newsscrape";
+mongoose.connect(MONGODB_URI);
 
 const Post = require ("./models/post")
 
