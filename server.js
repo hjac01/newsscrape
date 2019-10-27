@@ -14,8 +14,8 @@ app.use(express.static("public"));
 var databaseUrl = "newsscrape";
 var collections = ["posts"];
 
-var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/newsscrape";
-mongoose.connect(MONGODB_URI);
+var MONGODB = process.env.MONGODB || "mongodb://localhost/newsscrape";
+mongoose.connect(MONGODB);
 
 const Post = require ("./models/post")
 
@@ -73,8 +73,8 @@ app.get("/api/posts",(req, res)=>{
 })
 
 app.get("/api/posts/saved",(req, res)=>{
-  Post.find({saved:true},(err, data)=>{
-      if (err)
+  Post.find({saved:true},(error, data)=>{
+      if (error)
       console.log("error")
       res.json(data)
   })
@@ -82,13 +82,15 @@ app.get("/api/posts/saved",(req, res)=>{
 
 // saved articles
 app.post("/api/posts/saved", (req, res) => {
-  res.sendFile(path.join(_dirname + ".public/saved.html"));
-  db.post.insert({saved:true}, function(err, data) {
+  res.sendFile(path.join(_dirname + "./public/saved.html"));
+  db.post.insert({saved:true}, function(error, data) {
     if (error) {
-      console.log(error);
+      console.log("error");
     }
     else {
-      res.send(data);
+     console.log("saved");
+     res.send(data)
+     
     }
 
   })
@@ -97,16 +99,19 @@ app.post("/api/posts/saved", (req, res) => {
 app.post("/api/posts",(req, res) => {
   console.log(req.body)
   Post.findByIdAndUpdate(req.body.id, { $set: {
-    saved: true
-  }},(err,data)=> {
+    saved: true,
+
+  }},(err,data) => {
     if (err) {
     console.log("error")
     }
     console.log("success")
+    res.send(data);
+    
     
 
   })
-})
+});
 
 app.post("/", function(req, res){
     res.sendFile(path.join(_dirname + "./public/index.html"));
